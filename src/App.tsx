@@ -4,13 +4,15 @@ import PostCard from './components/PostCard';
 import { useGetPostsQuery, useNewPostMutation } from './redux/api';
 
 function App() {
-  const { isLoading, isError, isSuccess, data, error } = useGetPostsQuery('');
+  const { isLoading, data } = useGetPostsQuery('');
   const [newPost] = useNewPostMutation();
 
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
 
   async function handleForm(e: FormEvent<HTMLFormElement>) {
+    console.log(e);
+
     e.preventDefault();
     const post: Post = {
       title,
@@ -27,10 +29,10 @@ function App() {
   return (
     <>
       <div>App</div>
-      <form action="/" onClick={handleForm}>
+      <form action="/" onSubmit={handleForm}>
         <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
         <input type="text" placeholder="Title" value={body} onChange={e => setBody(e.target.value)} />
-        <input type="button" value={'Add'} />
+        <input type="submit" value={'Add'} />
       </form>
       {isLoading ? (
         <div>Loading...</div>
