@@ -4,9 +4,18 @@ export const posts = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://jsonplaceholder.typicode.com/'
   }),
+  tagTypes: ['Posts'],
   endpoints: builder => ({
-    getPosts: builder.query<string, string>({ query: () => 'posts' })
+    getPosts: builder.query<Post[], string>({ query: () => 'posts', providesTags: ['Posts'] }),
+    newPost: builder.mutation<Post, Post>({
+      query: post => ({
+        url: 'posts',
+        method: 'POST',
+        body: post
+      }),
+      invalidatesTags: ['Posts']
+    })
   })
 });
 
-export const { useGetPostsQuery } = posts;
+export const { useGetPostsQuery, useNewPostMutation } = posts;
